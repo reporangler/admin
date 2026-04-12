@@ -1,0 +1,15 @@
+networks:
+  repo_rangler_proxy:
+    name: repo_rangler_proxy
+    external: true
+
+services:
+  admin:
+    container_name: reporangler_admin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - repo_rangler_proxy
+    environment:
+      - VIRTUAL_HOST=admin.reporangler.localhost
