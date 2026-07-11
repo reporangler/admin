@@ -38,18 +38,17 @@ export default function Users() {
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <p className="text-sm text-gray-500">{usersQ.data?.count ?? 0} users</p>
-        <button
-          onClick={() => setShowCreate(true)}
-          className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-        >
+        <p className="text-sm text-[#a0a0a0]">
+          <span className="font-mono font-semibold text-white">{usersQ.data?.count ?? 0}</span> users
+        </p>
+        <button onClick={() => setShowCreate(true)} className="rr-btn rr-btn-primary">
           <Plus size={16} /> Create User
         </button>
       </div>
 
-      <div className="overflow-hidden rounded-xl bg-white shadow-sm">
+      <div className="rr-card overflow-hidden">
         <table className="w-full text-left text-sm">
-          <thead className="border-b bg-gray-50 text-xs uppercase text-gray-500">
+          <thead className="border-b border-[#2a2a2a] bg-[#1A1A1A] text-xs uppercase tracking-wider text-[#666]">
             <tr>
               <th className="px-6 py-3">Username</th>
               <th className="px-6 py-3">Email</th>
@@ -57,18 +56,18 @@ export default function Users() {
               <th className="px-6 py-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y divide-[#2a2a2a]">
             {usersQ.data?.data.map((u) => (
-              <tr key={u.id} className="hover:bg-gray-50">
-                <td className="px-6 py-3 font-medium text-gray-900">{u.username}</td>
-                <td className="px-6 py-3 text-gray-600">{u.email}</td>
+              <tr key={u.id} className="transition-colors hover:bg-[#2a2a2a]/50">
+                <td className="px-6 py-3 font-medium text-white">{u.username}</td>
+                <td className="px-6 py-3 text-[#a0a0a0]">{u.email}</td>
                 <td className="px-6 py-3">
                   <button
                     onClick={() => adminMut.mutate({ id: u.id, grant: !u.is_admin_user })}
-                    className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${
+                    className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                       u.is_admin_user
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-500'
+                        ? 'bg-[#00D4AA]/12 text-[#00D4AA] hover:bg-[#00D4AA]/20'
+                        : 'bg-[#2a2a2a] text-[#a0a0a0] hover:bg-[#333]'
                     }`}
                   >
                     {u.is_admin_user ? <ShieldCheck size={14} /> : <ShieldOff size={14} />}
@@ -78,16 +77,16 @@ export default function Users() {
                 <td className="px-6 py-3 text-right">
                   {confirmDelete === u.id ? (
                     <span className="flex items-center justify-end gap-2">
-                      <span className="text-xs text-gray-500">Confirm?</span>
+                      <span className="text-xs text-[#a0a0a0]">Confirm?</span>
                       <button
                         onClick={() => deleteMut.mutate(u.id)}
-                        className="rounded bg-red-600 px-2 py-1 text-xs text-white hover:bg-red-700"
+                        className="rounded bg-red-600 px-2 py-1 text-xs font-medium text-white transition-colors hover:bg-red-700"
                       >
                         Delete
                       </button>
                       <button
                         onClick={() => setConfirmDelete(null)}
-                        className="rounded bg-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-300"
+                        className="rounded bg-[#2a2a2a] px-2 py-1 text-xs font-medium text-[#a0a0a0] transition-colors hover:bg-[#333] hover:text-white"
                       >
                         Cancel
                       </button>
@@ -95,7 +94,8 @@ export default function Users() {
                   ) : (
                     <button
                       onClick={() => setConfirmDelete(u.id)}
-                      className="rounded-lg p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                      className="rounded-md p-1.5 text-[#666] transition-colors hover:bg-red-500/10 hover:text-red-400"
+                      aria-label="Delete user"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -105,7 +105,7 @@ export default function Users() {
             ))}
           </tbody>
         </table>
-        {usersQ.isLoading && <p className="p-6 text-center text-sm text-gray-400">Loading...</p>}
+        {usersQ.isLoading && <p className="p-6 text-center text-sm text-[#666]">Loading…</p>}
       </div>
 
       {/* Create user modal */}
@@ -118,53 +118,41 @@ export default function Users() {
           className="space-y-4"
         >
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Username</label>
+            <label className="rr-label">Username</label>
             <input
               value={form.username}
               onChange={(e) => setForm({ ...form, username: e.target.value })}
               required
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="rr-input"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Email</label>
+            <label className="rr-label">Email</label>
             <input
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               required
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="rr-input"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Password</label>
+            <label className="rr-label">Password</label>
             <input
               type="password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               required
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="rr-input"
             />
           </div>
-          {createMut.isError && (
-            <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
-              {createMut.error.message}
-            </div>
-          )}
+          {createMut.isError && <div className="rr-alert-error">{createMut.error.message}</div>}
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={() => setShowCreate(false)}
-              className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
-            >
+            <button type="button" onClick={() => setShowCreate(false)} className="rr-btn rr-btn-ghost">
               Cancel
             </button>
-            <button
-              type="submit"
-              disabled={createMut.isPending}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
-            >
-              {createMut.isPending ? 'Creating...' : 'Create'}
+            <button type="submit" disabled={createMut.isPending} className="rr-btn rr-btn-primary">
+              {createMut.isPending ? 'Creating…' : 'Create'}
             </button>
           </div>
         </form>

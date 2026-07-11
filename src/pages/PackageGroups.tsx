@@ -34,40 +34,39 @@ export default function PackageGroups() {
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="New group name..."
-          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+          placeholder="New group name…"
+          className="rr-input flex-1"
         />
         <button
           type="submit"
           disabled={createMut.isPending || !name.trim()}
-          className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="rr-btn rr-btn-primary"
         >
           <Plus size={16} /> Create
         </button>
       </form>
 
-      {createMut.isError && (
-        <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">{createMut.error.message}</div>
-      )}
+      {createMut.isError && <div className="mb-4 rr-alert-error">{createMut.error.message}</div>}
 
-      <div className="overflow-hidden rounded-xl bg-white shadow-sm">
+      <div className="rr-card overflow-hidden">
         <table className="w-full text-left text-sm">
-          <thead className="border-b bg-gray-50 text-xs uppercase text-gray-500">
+          <thead className="border-b border-[#2a2a2a] bg-[#1A1A1A] text-xs uppercase tracking-wider text-[#666]">
             <tr>
               <th className="px-6 py-3">ID</th>
               <th className="px-6 py-3">Name</th>
               <th className="px-6 py-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y divide-[#2a2a2a]">
             {groupsQ.data?.data.map((g) => (
-              <tr key={g.id} className="hover:bg-gray-50">
-                <td className="px-6 py-3 text-gray-500">{g.id}</td>
-                <td className="px-6 py-3 font-medium text-gray-900">{g.name}</td>
+              <tr key={g.id} className="transition-colors hover:bg-[#2a2a2a]/50">
+                <td className="px-6 py-3 font-mono text-[#666]">{g.id}</td>
+                <td className="px-6 py-3 font-medium text-white">{g.name}</td>
                 <td className="px-6 py-3 text-right">
                   <button
                     onClick={() => deleteMut.mutate(g.id)}
-                    className="rounded-lg p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                    className="rounded-md p-1.5 text-[#666] transition-colors hover:bg-red-500/10 hover:text-red-400"
+                    aria-label="Delete group"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -76,9 +75,9 @@ export default function PackageGroups() {
             ))}
           </tbody>
         </table>
-        {groupsQ.isLoading && <p className="p-6 text-center text-sm text-gray-400">Loading...</p>}
+        {groupsQ.isLoading && <p className="p-6 text-center text-sm text-[#666]">Loading…</p>}
         {!groupsQ.isLoading && (groupsQ.data?.data.length ?? 0) === 0 && (
-          <p className="p-6 text-center text-sm text-gray-400">No package groups</p>
+          <p className="p-6 text-center text-sm text-[#666]">No package groups</p>
         )}
       </div>
     </div>

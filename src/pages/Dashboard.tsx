@@ -23,7 +23,9 @@ export default function Dashboard() {
 
   return (
     <div>
-      <p className="mb-6 text-lg text-gray-600">Welcome, <span className="font-semibold text-gray-900">{username}</span></p>
+      <p className="mb-6 text-lg text-[#a0a0a0]">
+        Welcome, <span className="font-semibold text-white">{username}</span>
+      </p>
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
@@ -46,7 +48,9 @@ export default function Dashboard() {
         />
       </div>
 
-      <h2 className="mb-4 text-lg font-semibold text-gray-900">Packages by Ecosystem</h2>
+      <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#666]">
+        Packages by Ecosystem
+      </h2>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {ecosystems.map((eco, i) => (
           <StatCard

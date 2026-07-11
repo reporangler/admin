@@ -24,22 +24,24 @@ export default function Repositories() {
         const loading = pkgCounts[i].isLoading;
 
         return (
-          <div key={eco} className="rounded-xl bg-white p-6 shadow-sm">
+          <div key={eco} className="rr-card p-6 transition-colors hover:border-[#3a3a3a]">
             <div className="mb-4 flex items-center gap-3">
-              <div className="rounded-lg bg-indigo-50 p-2 text-indigo-600">
+              <div className="rounded-lg bg-[#FF6B35]/12 p-2 text-[#FF6B35]">
                 <Database size={22} />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">{eco.toUpperCase()}</h3>
+              <h3 className="font-mono text-lg font-bold tracking-tight text-white">
+                {eco.toUpperCase()}
+              </h3>
             </div>
-            <div className="mb-4 flex items-center gap-2 text-gray-500">
+            <div className="mb-4 flex items-center gap-2 text-[#a0a0a0]">
               <Package size={16} />
               <span className="text-sm">
-                {loading ? '...' : `${count} package${count !== 1 ? 's' : ''}`}
+                {loading ? '…' : `${count} package${count !== 1 ? 's' : ''}`}
               </span>
             </div>
             <Link
               to={`/packages?eco=${eco}`}
-              className="flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700"
+              className="inline-flex items-center gap-1 text-sm font-medium text-[#FF6B35] transition-colors hover:text-[#e55a24]"
             >
               View packages <ArrowRight size={14} />
             </Link>
@@ -48,7 +50,7 @@ export default function Repositories() {
       })}
 
       {reposQ.isLoading && (
-        <p className="col-span-full text-center text-sm text-gray-400">Loading...</p>
+        <p className="col-span-full text-center text-sm text-[#666]">Loading…</p>
       )}
     </div>
   );

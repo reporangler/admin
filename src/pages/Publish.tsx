@@ -78,13 +78,13 @@ export default function Publish() {
   return (
     <div className="mx-auto max-w-2xl">
       {/* Ecosystem selector */}
-      <div className="mb-6 flex rounded-lg bg-white shadow-sm">
+      <div className="mb-6 flex overflow-hidden rounded-lg border border-[#2a2a2a] bg-[#212121]">
         {(Object.keys(ecoConfig) as Ecosystem[]).map((e) => (
           <button
             key={e}
             onClick={() => { setEco(e); setFile(null); setResult(null); setProgress(null); }}
-            className={`flex-1 px-4 py-2.5 text-sm font-medium first:rounded-l-lg last:rounded-r-lg ${
-              eco === e ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100'
+            className={`flex-1 px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wide transition-colors ${
+              eco === e ? 'bg-[#FF6B35] text-white' : 'text-[#a0a0a0] hover:bg-[#2a2a2a] hover:text-white'
             }`}
           >
             {ecoConfig[e].label}
@@ -92,14 +92,14 @@ export default function Publish() {
         ))}
       </div>
 
-      <div className="rounded-xl bg-white p-6 shadow-sm">
+      <div className="rr-card p-6">
         {/* Package group selector */}
         <div className="mb-4">
-          <label className="mb-1 block text-sm font-medium text-gray-700">Package Group</label>
+          <label className="rr-label">Package Group</label>
           <select
             value={packageGroup}
             onChange={(e) => setPackageGroup(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+            className="rr-select"
           >
             <option value="">None</option>
             {groupsQ.data?.data.map((g) => (
@@ -112,12 +112,12 @@ export default function Publish() {
           /* Composer VCS form */
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">VCS Repository URL</label>
+              <label className="rr-label">VCS Repository URL</label>
               <input
                 value={vcsUrl}
                 onChange={(e) => setVcsUrl(e.target.value)}
                 placeholder="https://github.com/org/repo.git"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                className="rr-input"
               />
             </div>
           </div>
@@ -126,31 +126,31 @@ export default function Publish() {
             {eco === 'go' && (
               <div className="mb-4 space-y-4">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">Module Path</label>
+                  <label className="rr-label">Module Path</label>
                   <input
                     value={goModule}
                     onChange={(e) => setGoModule(e.target.value)}
                     placeholder="github.com/org/module"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                    className="rr-input"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">Version</label>
+                  <label className="rr-label">Version</label>
                   <input
                     value={goVersion}
                     onChange={(e) => setGoVersion(e.target.value)}
                     placeholder="v1.0.0"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                    className="rr-input"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">go.mod</label>
+                  <label className="rr-label">go.mod</label>
                   <textarea
                     value={goMod}
                     onChange={(e) => setGoMod(e.target.value)}
                     rows={4}
                     placeholder="module github.com/org/module&#10;&#10;go 1.21"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 font-mono text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                    className="rr-textarea font-mono"
                   />
                 </div>
               </div>
@@ -164,8 +164,8 @@ export default function Publish() {
               onClick={() => fileRef.current?.click()}
               className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 transition-colors ${
                 dragOver
-                  ? 'border-indigo-500 bg-indigo-50'
-                  : 'border-gray-300 hover:border-gray-400'
+                  ? 'border-[#FF6B35] bg-[#FF6B35]/8'
+                  : 'border-[#2a2a2a] hover:border-[#444]'
               }`}
             >
               <input
@@ -177,20 +177,21 @@ export default function Publish() {
               />
               {file ? (
                 <div className="flex items-center gap-3">
-                  <FileUp size={24} className="text-indigo-600" />
-                  <span className="text-sm font-medium text-gray-900">{file.name}</span>
+                  <FileUp size={24} className="text-[#FF6B35]" />
+                  <span className="text-sm font-medium text-white">{file.name}</span>
                   <button
                     onClick={(e) => { e.stopPropagation(); setFile(null); }}
-                    className="rounded p-1 text-gray-400 hover:text-gray-600"
+                    className="rounded p-1 text-[#666] hover:text-white"
+                    aria-label="Remove file"
                   >
                     <X size={16} />
                   </button>
                 </div>
               ) : (
                 <>
-                  <Upload size={32} className="mb-2 text-gray-400" />
-                  <p className="text-sm text-gray-500">{cfg.description}</p>
-                  <p className="mt-1 text-xs text-gray-400">or click to browse</p>
+                  <Upload size={32} className="mb-2 text-[#666]" />
+                  <p className="text-sm text-[#a0a0a0]">{cfg.description}</p>
+                  <p className="mt-1 text-xs text-[#666]">or click to browse</p>
                 </>
               )}
             </div>
@@ -200,23 +201,19 @@ export default function Publish() {
         {/* Progress bar */}
         {progress !== null && (
           <div className="mt-4">
-            <div className="h-2 overflow-hidden rounded-full bg-gray-200">
+            <div className="h-2 overflow-hidden rounded-full bg-[#2a2a2a]">
               <div
-                className="h-full rounded-full bg-indigo-600 transition-all"
+                className="h-full rounded-full bg-[#FF6B35] transition-all"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <p className="mt-1 text-xs text-gray-500">{progress}%</p>
+            <p className="mt-1 font-mono text-xs text-[#a0a0a0]">{progress}%</p>
           </div>
         )}
 
         {/* Result message */}
         {result && (
-          <div
-            className={`mt-4 flex items-center gap-2 rounded-lg p-3 text-sm ${
-              result.ok ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'
-            }`}
-          >
+          <div className={`mt-4 flex items-center gap-2 ${result.ok ? 'rr-alert-success' : 'rr-alert-error'}`}>
             {result.ok ? <CheckCircle size={16} /> : <AlertCircle size={16} />}
             {result.msg}
           </div>
@@ -226,7 +223,7 @@ export default function Publish() {
         <button
           onClick={handleSubmit}
           disabled={eco === 'php' ? !vcsUrl.trim() : !file}
-          className="mt-4 w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="rr-btn rr-btn-primary mt-4 w-full"
         >
           {eco === 'php' ? 'Scan Repository' : 'Publish Package'}
         </button>

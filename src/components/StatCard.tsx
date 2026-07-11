@@ -9,14 +9,14 @@ interface StatCardProps {
 
 export default function StatCard({ icon, label, value, loading }: StatCardProps) {
   return (
-    <div className="rounded-xl bg-white p-6 shadow-sm">
+    <div className="rr-card p-6 transition-colors hover:border-[#3a3a3a]">
       <div className="mb-3 flex items-center gap-3">
-        <div className="rounded-lg bg-indigo-50 p-2 text-indigo-600">{icon}</div>
-        <span className="text-sm font-medium text-gray-500">{label}</span>
+        <div className="rounded-lg bg-[#FF6B35]/12 p-2 text-[#FF6B35]">{icon}</div>
+        <span className="text-xs font-medium uppercase tracking-wider text-[#a0a0a0]">{label}</span>
       </div>
-      <p className="text-3xl font-bold text-gray-900">
+      <p className="font-mono text-3xl font-bold text-white">
         {loading ? (
-          <span className="inline-block h-8 w-16 animate-pulse rounded bg-gray-200" />
+          <span className="inline-block h-8 w-16 animate-pulse rounded bg-[#2a2a2a]" />
         ) : (
           value
         )}

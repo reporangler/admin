@@ -88,6 +88,18 @@ export interface ListResponse<T> {
   data: T[];
 }
 
+// Normalize a list response into the {count,data} envelope. metadata-service
+// returns the envelope, but auth-service's GET /user returns a bare array — so
+// coerce either shape here. This keeps the pages (which read .data / .count)
+// working regardless of which service answered, instead of crashing on
+// `undefined.map`.
+function toList<T>(raw: unknown): ListResponse<T> {
+  if (Array.isArray(raw)) return { count: raw.length, data: raw as T[] };
+  const env = raw as Partial<ListResponse<T>> | null;
+  const data = Array.isArray(env?.data) ? env!.data : [];
+  return { count: env?.count ?? data.length, data };
+}
+
 // --- Auth ---
 
 export async function login(username: string, password: string): Promise<void> {
@@ -111,7 +123,7 @@ export async function login(username: string, password: string): Promise<void> {
 
 export async function getUsers(): Promise<ListResponse<User>> {
   const res = await authFetch(`${AUTH_URL}/user`);
-  return res.json();
+  return toList<User>(await res.json());
 }
 
 export async function createUser(data: { username: string; email: string; password: string }): Promise<void> {
@@ -137,7 +149,7 @@ export async function revokeAdmin(id: number): Promise<void> {
 
 export async function getPackageGroups(): Promise<ListResponse<PackageGroup>> {
   const res = await authFetch(`${METADATA_URL}/package-group`);
-  return res.json();
+  return toList<PackageGroup>(await res.json());
 }
 
 export async function createPackageGroup(name: string): Promise<void> {
@@ -155,7 +167,7 @@ export async function deletePackageGroup(id: number): Promise<void> {
 
 export async function getRepositories(): Promise<ListResponse<Repository>> {
   const res = await authFetch(`${METADATA_URL}/repository`);
-  return res.json();
+  return toList<Repository>(await res.json());
 }
 
 export async function createRepository(name: string): Promise<void> {
@@ -169,7 +181,7 @@ export async function createRepository(name: string): Promise<void> {
 
 export async function getPackages(repository: string): Promise<ListResponse<Package>> {
   const res = await authFetch(`${METADATA_URL}/package/${repository}`);
-  return res.json();
+  return toList<Package>(await res.json());
 }
 
 // --- Publishing ---
